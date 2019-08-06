@@ -9,6 +9,12 @@ class wordAttributes{
 
     }
 
+    /**
+     * Getting attribute nodes
+     *
+     * @param  array $data
+     * @return string
+     */
     public function getNodes($data = array()){
         $nodeLists = array();
         foreach($data as $name=>$vals){
@@ -25,6 +31,13 @@ class wordAttributes{
         return implode("",$nodeLists);
     }
 
+    /**
+     * Getting attribute content
+     *
+     * @param  array $data
+	 * @param string $nodeName
+     * @return string
+     */
     public function getAttr($data,$nodeName = ''){
         $attrList = array();
         if($data){

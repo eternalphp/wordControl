@@ -64,30 +64,66 @@ class wordTableBorders{
         return $this;
     }
 
+    /**
+     * Set Form Border Size
+     *
+     * @param  int $value
+     * @return $this
+     */
     public function size($value){
         $this->option[$this->borderAttrName]['@attributes']['w:sz'] = $value;
 		return $this;
     }
 
+    /**
+     * Set the margin spacing of the table
+     *
+     * @param  int $value
+     * @return $this
+     */
     public function space($value){
         $this->option[$this->borderAttrName]['@attributes']['w:space'] = $value;
 		return $this;
     }
 
+    /**
+     * Set the border color of the table
+     *
+     * @param  int $value
+     * @return $this
+     */
     public function color($value){
         $this->option[$this->borderAttrName]['@attributes']['w:color'] = ltrim($value,'#');
 		return $this;
     }
 
+    /**
+     * Set the border value of the table
+     *
+     * @param  int $value
+     * @return $this
+     */
     public function value($value){
         $this->option[$this->borderAttrName]['@attributes']['w:val'] = $value;
 		return $this;
     }
 
+	
+    /**
+     * Get a list of table border properties
+     *
+     * @return $this
+     */
     public function getAttrs(){
         return $this->option;
     }
 
+    /**
+     * Batch Setting Properties
+     *
+	 * @param array $option
+     * @return $this
+     */
     public function setAttrs($option = array()){
         if($option){
             $this->option = array_merge($this->option,$option);

@@ -8,6 +8,12 @@ class wordBase{
 	static $xmlElement = null;
 	static $imageList = array();
 	
+    /**
+     * Parsing XML objects
+     *
+     * @param  string $filename
+     * @return string
+     */
 	public static function getXML($filename = 'document.xml.rels'){
 		if(wordBase::$xmlElement == null){
 			$xml = file_get_contents(dirname(__DIR__).'/static/'.$filename);
@@ -21,6 +27,12 @@ class wordBase{
 		return count(wordBase::$xmlElement->children());
 	}
 	
+    /**
+     * Adding Image Objects
+     *
+     * @param  string $filename
+     * @return string
+     */
 	public static function addWordImage($filename){
 		if(file_exists($filename)){
 			self::$imageList[] = $filename;
@@ -36,6 +48,11 @@ class wordBase{
 		}
 	}
 	
+    /**
+     * Add header for word
+     *
+     * @return void
+     */
 	public static function addWordHeader(){
 		
 		wordBase::getXML();
@@ -48,6 +65,11 @@ class wordBase{
 		$childNode->addAttribute('Target','header1.xml');
 	}
 	
+    /**
+     * Add footer for word
+     *
+     * @return void
+     */
 	public static function addWordFooter(){
 		
 		wordBase::getXML();
@@ -60,6 +82,11 @@ class wordBase{
 		$childNode->addAttribute('Target','footer1.xml');
 	}
 	
+    /**
+     * Get a list of image objects
+     *
+     * @return array
+     */
 	public static function getImageList(){
 		return self::$imageList;
 	}

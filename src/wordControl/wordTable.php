@@ -87,6 +87,12 @@ class wordTable{
         );
     }
 
+    /**
+     * Create table row objects
+     *
+     * @param  callable $callback
+     * @return $this
+     */
     public function createRow(callable $callback){
         if($callback){
            $wordTableRow = new wordTableRow();
@@ -96,13 +102,24 @@ class wordTable{
         return $this;
     }
 
-    //创建表格行模板
+    /**
+     * Create table row template
+     *
+     * @param  callable $callback
+     * @return $this
+     */
     public function createTemplate($name){
         $this->templateList[$name] = end($this->rows);
         return $this;
     }
 
-    //使用表格行模板
+    /**
+     * Use table row templates
+     *
+	 * @param string $name
+     * @param  array $texts
+     * @return $this
+     */
     public function templateText($name,$texts = array()){
         if(isset($this->templateList[$name])){
             $wordTableRow = clone $this->templateList[$name];
@@ -135,6 +152,12 @@ class wordTable{
         return $this;
     }
 
+    /**
+     * Setting table border properties
+     *
+     * @param  callable $callback
+     * @return $this
+     */
     public function borders(callable $callback){
         if($callback){
             $wordTableBorders = new wordTableBorders();
@@ -143,6 +166,11 @@ class wordTable{
         }
     }
 
+    /**
+     * Get table row object content
+     *
+     * @return string
+     */
     private function getRows(){
         $rows = array();
         if($this->rows){
@@ -168,6 +196,11 @@ class wordTable{
         return implode("",$rows);
     }
 
+    /**
+     * Get table grid
+     *
+     * @return string
+     */
     private function getTblGrid(){
         $gridCols = array();
         if($this->cellWidths){
@@ -178,7 +211,13 @@ class wordTable{
         return implode("",$gridCols);
     }
 	
-	//删除表格行
+    /**
+     * Delete table rows
+     *
+	 * @param int $rowIndex
+	 * @param int $row
+     * @return $this
+     */
 	public function removeRows($rowIndex = 0,$rows = 1){
 		if($this->rows){
 			for($index = $rowIndex;$index < ($rowIndex + $rows);$index++){
@@ -190,6 +229,11 @@ class wordTable{
 		return $this;
 	}
 
+    /**
+     * Getting table object content
+     *
+     * @return string
+     */
     public function getTable(){
         $rows = $this->getRows();
         $gridCols = $this->getTblGrid();
@@ -197,6 +241,11 @@ class wordTable{
         return sprintf('<w:tbl><w:tblPr> %s </w:tblPr><w:tblGrid> %s </w:tblGrid> %s </w:tbl>',$wordAttributes->getNodes($this->option),$gridCols,$rows);
     }
 
+    /**
+     * Batch setting table properties
+     *
+     * @return $this
+     */
     public function setAttrs($option = array()){
         if($option){
             $this->option = array_merge($this->option,$option);

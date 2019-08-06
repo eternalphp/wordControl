@@ -8,7 +8,7 @@ class wordSection{
     private $option = array(); //段落属性
     private $texts = array(); //文本对象
     private $images = array(); //图片对象
-    private $links = array();
+    private $links = array(); //链接对象
 
     public function __construct(){
         $this->option = array(
@@ -69,7 +69,7 @@ class wordSection{
      * @return $this
      */
     public function spacing($value){
-        $this->option['w:spacing']['@attributes']['w:line'] = (intval($value) * 240);
+        $this->option['w:spacing']['@attributes']['w:line'] =  (intval($value) * 240);
 		return $this;
     }
 
@@ -83,13 +83,28 @@ class wordSection{
         $this->option['w:ind']['@attributes']['w:firstLine'] = (intval($value) * 240);
 		return $this;
     }
+	
+    /**
+     * Set the first line spacing of a paragraph
+     *
+     * @param  string $value
+     * @return $this
+     */
+    public function pStyle($value = 1){
+        $this->option['w:pStyle']['@attributes']['w:val'] = $value;
+		return $this;
+    }
 
-    /*******************************************
-        'w:val'=>'single',
-        'w:sz'=>'12',
-        'w:space'=>'2',
-        'w:color'=>'auto'
-    ********************************************/
+    /**
+     * Modify the bottom attributes of a paragraph
+     * 
+	 * 'w:val'=>'single',
+	 * 'w:sz'=>'12',
+	 * 'w:space'=>'2',
+	 * 'w:color'=>'auto'
+     * @param  callable $callback
+     * @return $this
+     */
     public function bottom(callable $callback){
         if($callback){
             $wordSectionBottom = new wordSectionBottom();
@@ -99,7 +114,12 @@ class wordSection{
 		return $this;
     }
 
-	//创建文本对象
+    /**
+     * Create text objects
+     *
+     * @param  callable $callback
+     * @return $this
+     */
     public function createText(callable $callback){
         if($callback){
 			$wordText = new wordText();
@@ -109,7 +129,12 @@ class wordSection{
         return $this;
     }
 
-	//创建图片对象
+    /**
+     * Create image objects
+     *
+     * @param  callable $callback
+     * @return $this
+     */
     public function createImage(callable $callback){
         if($callback){
             $wordImage = new wordImage();
@@ -119,7 +144,12 @@ class wordSection{
         return $this;
     }
 	
-	//创建链接对象
+    /**
+     * Creating Link Objects
+     *
+     * @param  callable $callback
+     * @return $this
+     */
     public function createLink(callable $callback){
         if($callback){
             $wordLink = new wordLink();
@@ -129,6 +159,11 @@ class wordSection{
         return $this;
     }
 
+    /**
+     * Getting text content
+     *
+     * @return string
+     */
     public function getTexts(){
         $textNode = array();
         if($this->texts){
@@ -152,25 +187,46 @@ class wordSection{
         return implode("",$textNode);
     }
 
-    //获取当前段落文本对象列表
+    /**
+     * Get a list of text objects for the current paragraph
+     *
+     * @return objects
+     */
     public function getSectionTexts(){
         return $this->texts;
     }
 
-    //在指定位置添加文本对象
+    /**
+     * Adding text objects at specified locations
+     *
+	 * @param wordText $wordText
+	 * @param int $index
+     * @return $this
+     */
     public function addText(wordText $wordText,$index = 0){
         $this->texts[$index] = $wordText;
         return $this;
     }
 
-    //修改文本对象
+    /**
+     * Modifying text objects
+     *
+	 * @param wordText $wordText
+     * @return $this
+     */
     public function updateText(wordText $wordText){
         unset($this->texts);
         $this->texts[] = $wordText;
         return $this;
     }
 
-    //替换段落下的文本
+    /**
+     * Replace the text under the paragraph
+     *
+	 * @param string $keyword
+	 * @param string $newText
+     * @return $this
+     */
     public function replaceText($keyword,$newText){
         foreach($this->texts as $wordText){
             $text = $wordText->getTexts();
@@ -182,7 +238,12 @@ class wordSection{
         return $this;
     }
 	
-	//查询文本
+    /**
+     * Text under query paragraph
+     *
+	 * @param string $keyword
+     * @return bool
+     */
     public function searchText($keyword){
         $texts = array();
         foreach($this->texts as $wordText){
@@ -196,7 +257,12 @@ class wordSection{
         }
     }
 	
-	//修改属性
+    /**
+     * Modify paragraph attributes
+     *
+	 * @param array $option
+     * @return $this
+     */
     public function setAttrs($option = array()){
         if($option){
             $this->option = array_merge($this->option,$option);
@@ -204,13 +270,21 @@ class wordSection{
         return $this;
     }
 	
-	//获取段落节点
+    /**
+     * Getting paragraph content
+     *
+     * @return string
+     */
     public function getSection(){
         $wordAttributes = new wordAttributes();
         return sprintf('<w:p><w:pPr>%s</w:pPr>%s</w:p>',$wordAttributes->getNodes($this->option),$this->getTexts());
     }
 	
-	//获取图片对象
+    /**
+     * Getting Picture Objects
+     *
+     * @return objects
+     */
 	public function getImages(){
 		return $this->images;
 	}

@@ -40,6 +40,12 @@ class wordStyle{
         );  
     }
 
+    /**
+     * Setting Text Font
+     *
+     * @param  string $value
+     * @return $this
+     */
     public function font($value = 'Arial'){
 		foreach($this->option['w:rFonts']['@attributes'] as $key=>$val){
 			$this->option['w:rFonts']['@attributes'][$key] = $value;
@@ -47,47 +53,86 @@ class wordStyle{
 		return $this;
     }
 
+    /**
+     * Setting Text Colors
+     *
+     * @param  string $value
+     * @return $this
+     */
     public function color($value = '333333'){
         $this->option['w:color']['@attributes']['w:val'] = ltrim($value,'#');
 		return $this;
     }
 
+    /**
+     * Setting text size
+     *
+     * @param  string $value
+     * @return $this
+     */
     public function size($value){
         $this->option['w:sz']['@attributes']['w:val'] = (intval($value) * 2);
         $this->option['w:szCs']['@attributes']['w:val'] = (intval($value) * 2);
 		return $this;
     }
 
-    //字间距
+    /**
+     * Setting Text Word Spacing
+     *
+     * @param  string $value
+     * @return $this
+     */
     public function spacing($value){
         $this->option['w:spacing']['@attributes']['w:val'] = intval($value);
 		return $this;
     }
 
-    //加粗
+    /**
+     * Setting Text Coarsening
+     *
+     * @return $this
+     */
     public function bold(){
         $this->option['w:b']['@attributes']['w:val'] = 'on';
 		return $this;
     }
 
-    //斜体
+    /**
+     * Setting text italics
+     *
+     * @return $this
+     */
     public function italic(){
         $this->option['w:i']['@attributes']['w:val'] = 'on';
 		return $this;
     }
 
-    //下划线
+    /**
+     * Setting Text Underlines
+     *
+     * @return $this
+     */
     public function underline(){
         $this->option['w:u']['@attributes']['w:val'] = 'on';
 		return $this;
     }
 
-    //删除线
+    /**
+     * Setting Text Delete Line
+     *
+     * @param  string $value
+     * @return $this
+     */
     public function deleteline(){
         $this->option['w:strike']['@attributes']['w:val'] = 'on';
 		return $this;
     }
 
+    /**
+     * Getting attribute objects
+     *
+     * @return array
+     */
     public function getAttrs(){
         return $this->option;
     }

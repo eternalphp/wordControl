@@ -19,30 +19,65 @@ class wordSectionBottom{
         );    
     }
 
+    /**
+     * Setting the size attribute at the bottom of the paragraph
+     *
+	 * @param int $value
+     * @return $this
+     */
     public function size($value){
         $this->option['w:bottom']['@attributes']['w:sz'] = $value;
 		return $this;
     }
 
+    /**
+     * Setting Spacing Properties
+     *
+	 * @param int $value
+     * @return $this
+     */
     public function space($value){
         $this->option['w:bottom']['@attributes']['w:space'] = $value;
 		return $this;
     }
 
+    /**
+     * Setting color attributes
+     *
+	 * @param int $value
+     * @return $this
+     */
     public function color($value){
         $this->option['w:bottom']['@attributes']['w:color'] = $value;
 		return $this;
     }
 
+    /**
+     * Setting value attributes
+     *
+	 * @param int $value
+     * @return $this
+     */
     public function value($value){
         $this->option['w:bottom']['@attributes']['w:val'] = $value;
 		return $this;
     }
 
+    /**
+     * Getting attribute objects
+     *
+     * @return array
+     */
     public function getAttrs(){
         return $this->option;
     }
 
+    /**
+     * Batch Setting Properties
+     *
+	 * @param array $option
+     * @return $this
+     */
     public function setAttrs($option = array()){
         if($option){
             $this->option = array_merge($this->option,$option);

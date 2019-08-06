@@ -2,9 +2,26 @@
 
 namespace wordControl;
 
-require(__DIR__ .'/Autoloader.php');
+/* 
+use wordControl\wordBase;
+use wordControl\wordHeader;
+use wordControl\wordFooter;
+use wordControl\wordText;
+use wordControl\wordSection;
+use wordControl\wordSectionBottom;
+use wordControl\wordImage;
+use wordControl\wordLink;
+use wordControl\wordStyle;
+use wordControl\wordTable;
+use wordControl\wordTableRow;
+use wordControl\wordTableCell;
+use wordControl\wordTableBorders;
+use wordControl\wordAttributes;
+use wordControl\wordException;
+ 
+*/
+use ZipArchive;
 
-Autoloader::Register();
 
 //word操作类
 class wordControl{
@@ -59,7 +76,12 @@ class wordControl{
         );
     }
 	
-	//创建页眉
+    /**
+     * Create header objects
+     *
+     * @param  callback $callback
+     * @return $this
+     */
     public function createPageHeader(callable $callback){
 		if($callback){
 			$wordHeader = new wordHeader();
@@ -73,7 +95,12 @@ class wordControl{
         return $this;
     }
 
-	//创建页脚
+    /**
+     * Create footer objects
+     *
+     * @param  callback $callback
+     * @return $this
+     */
     public function createPageFooter(callable $callback){
 		if($callback){
 			$wordFooter = new wordFooter();
@@ -87,7 +114,12 @@ class wordControl{
         return $this;
     }
 
-    //创建段落
+    /**
+     * Create paragraph objects
+     *
+     * @param  callback $callback
+     * @return $this
+     */
     public function createSection(callable $callback){
         if($callback){
 			$wordSection = new wordSection();
@@ -100,7 +132,12 @@ class wordControl{
         return $this;
     }
 
-    //创建段落模板
+    /**
+     * Create paragraph templates
+     *
+     * @param  string $name
+     * @return $this
+     */
     public function createTemplate($name){
         if ($this->sectionLists) {
             $this->templeteList[$name] = end($this->sectionLists);
@@ -108,7 +145,13 @@ class wordControl{
         return $this;
     }
 
-    //为模板设置内容
+    /**
+     * Setting up content for templates
+     *
+     * @param  string $name
+     * @param  string $text	 
+     * @return $this
+     */
     public function templateText($name,$text){
         if (isset($this->templeteList[$name])) {
             $wordSection = clone $this->templeteList[$name]['section'];
@@ -122,7 +165,12 @@ class wordControl{
         return $this;
     }
 
-    //创建表格
+    /**
+     * Create table objects
+     *
+     * @param  callback $callback
+     * @return $this
+     */
     public function createTable(callable $callback){
         if($callback){
 			$wordTable = new wordTable();
@@ -134,7 +182,11 @@ class wordControl{
         }
     }
 	
-	//创建word文档内容
+    /**
+     * Generate word document content
+     *
+     * @return $this
+     */
     public function createXML(){
         $sectionsList = array();
         if($this->sectionLists){
@@ -155,14 +207,19 @@ class wordControl{
     }
 	
 	//生成word文档
+    /**
+     * Save word documents
+     *
+     * @return $this
+     */
     public function save($filename = ''){
         if($filename != ''){
             $this->filename = $filename;
         }
         $this->documentXML = $this->xmlTag . $this->headerTag . $this->bodyTag . $this->endTag;
 		$zip = new ZipArchive();
-        $templateFile = __DIR__ . "/static/template.docx";
-        $tempFileName = __DIR__ . sprintf("/tempFileName_%d.docx",time());
+        $templateFile = dirname(__DIR__) . "/static/template.docx";
+        $tempFileName = dirname(__DIR__) . sprintf("/tempFileName_%d.docx",time());
         copy($templateFile,$tempFileName);
 		
         if($zip->open($tempFileName,ZipArchive::CREATE) == true){
@@ -206,7 +263,11 @@ class wordControl{
         return $this;
     }
 
-	//加载word文档
+    /**
+     * Loading word documents
+     *
+     * @return $this
+     */
     public function load($filename){
         if(file_exists($filename)){
             $this->zip = new ZipArchive();
@@ -217,7 +278,11 @@ class wordControl{
         return $this;
     }
 	
-	//解析word文档
+    /**
+     * Parsing word documents
+     *
+     * @return $this
+     */
     public function parseWord(){
 
         if ($this->documentXML != '') {
@@ -301,7 +366,14 @@ class wordControl{
         return $this;
     }
 
-    //解析段落文本
+    /**
+     * Parsing paragraph text
+     *
+	 * @param wordSection $wordSection
+	 * @param array $word
+	 * @param array $texts
+     * @return $this
+     */
     private function parseWordText($wordSection,$word,&$texts = null){
 
         if (isset($word['w:t'])) {
@@ -334,7 +406,14 @@ class wordControl{
         return $wordSection;
     }
 
-    //解析链接文本
+    /**
+     * Parsing Linked Text
+     *
+	 * @param wordSection $wordSection
+	 * @param array $word
+	 * @param array $texts
+     * @return $this
+     */
     private function parseWordLink($wordSection,$word,&$texts = null){
         $wordSection->createLink(function ($wordLink) use ($word,&$texts) {
 
@@ -391,32 +470,83 @@ class wordControl{
         return $data;
     }
 	
-	//获取当前文档的文本列表
+    /**
+     * Get a text list of the current document
+     *
+     * @return array
+     */
     public function getWordSections(){
         return $this->sectionTextList;
     }
 	
-	//获取当前文档的对象列表
+    /**
+     * Get the list of objects for the current document
+     *
+     * @return array
+     */
     public function getWordSectionLists(){
         return $this->sectionLists;
     }
 	
-	//获取指定段落对象
+    /**
+     * Gets the specified paragraph object
+     *
+     * @return object
+     */
     public function getWordSectionItem($index = 0){
         return $this->sectionLists[$index];
     }
 	
-	//获取word文档的xml结构
+    /**
+     * Get font size values
+     *
+	 * @param string $size
+     * @return object
+     */
+	public function getFontSize($fontSize){
+		$fontSizeList = array(
+			'初号'=>42,
+			'小初'=>36,
+			'一号'=>26,
+			'小一'=>24,
+			'二号'=>22,
+			'小二'=>18,
+			'三号'=>16,
+			'小三'=>15,
+			'四号'=>14,
+			'小四'=>12,
+			'五号'=>10.5,
+			'六号'=>7.5,
+			'小六'=>6.5,
+			'七号'=>5.5,
+			'八号'=>5
+		);
+		return isset($fontSizeList[$fontSize]) ? $fontSizeList[$fontSize] : $fontSize['五号'];
+	}
+	
+    /**
+     * Getting the XML structure of word documents
+     *
+     * @return string
+     */
     public function getXML(){
         return $this->documentXML;
     }
 	
-	//打印xml结构
+    /**
+     * Print XML structure
+     *
+     * @return string
+     */
     public function printXML(){
         echo $this->documentXML;
     }
 
-	//下载文档
+    /**
+     * Download Documents
+     *
+     * @return string
+     */
     public function output(){
         $fileinfo = pathinfo($this->filename);
         header('Content-type: application/x-' . $fileinfo['extension']);
