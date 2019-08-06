@@ -148,7 +148,17 @@ class wordText{
      * @return $this
      */
     public function underline(){
-        $this->option['w:u']['@attributes']['w:val'] = 'on';
+        $this->option['w:u']['@attributes']['w:val'] = 'single';
+		return $this;
+    }
+	
+    /**
+     * Setting Text Underlines
+     *
+     * @return $this
+     */
+    public function underlines(){
+        $this->option['w:u']['@attributes']['w:val'] = 'double';
 		return $this;
     }
 

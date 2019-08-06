@@ -9,6 +9,7 @@ class wordSection{
     private $texts = array(); //文本对象
     private $images = array(); //图片对象
     private $links = array(); //链接对象
+	private $titleStyle = false;
 
     public function __construct(){
         $this->option = array(
@@ -74,7 +75,7 @@ class wordSection{
     }
 
     /**
-     * Set the first line spacing of a paragraph
+     * Set paragraph indentation
      *
      * @param  string $value
      * @return $this
@@ -92,6 +93,7 @@ class wordSection{
      */
     public function pStyle($value = 1){
         $this->option['w:pStyle']['@attributes']['w:val'] = $value;
+		$this->titleStyle = true;
 		return $this;
     }
 
@@ -277,7 +279,11 @@ class wordSection{
      */
     public function getSection(){
         $wordAttributes = new wordAttributes();
-        return sprintf('<w:p><w:pPr>%s</w:pPr>%s</w:p>',$wordAttributes->getNodes($this->option),$this->getTexts());
+		$titleStyle = '';
+		if($this->titleStyle){
+			$titleStyle = '<w:bookmarkStart w:id="0" w:name="_GoBack"/><w:bookmarkEnd w:id="0"/>';
+		}
+        return sprintf('<w:p><w:pPr>%s</w:pPr>%s %s</w:p>',$wordAttributes->getNodes($this->option),$this->getTexts(),$titleStyle);
     }
 	
     /**

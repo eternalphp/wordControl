@@ -197,7 +197,7 @@ class wordTable{
     }
 
     /**
-     * Get table grid
+     * Get cell column properties
      *
      * @return string
      */
