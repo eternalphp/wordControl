@@ -1,0 +1,21 @@
+{
+    "name": "eternalphp/wordcontrol",
+    "description": "wordControl,phpWord",
+    "type": "library",
+    "license": "MIT",
+	"authors": [
+		{
+			"name": "yuanzhongyi",
+			"email": "kld230@163.com"
+		}
+	],
+    "minimum-stability": "dev",
+    "require": {
+		"php": ">=5.6"
+	},
+	"autoload": {
+		"psr-4": {
+			"wordControl\\":"src/"
+		}
+	}
+}
