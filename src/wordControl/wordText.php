@@ -41,7 +41,7 @@ class wordText{
             ),
             'w:spacing'=>array(
                 '@attributes'=>array(
-                    'w:val'=>'0'
+                    'w:val'=>'21'
                 )
             )
         );
