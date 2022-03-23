@@ -140,7 +140,7 @@ class wordControl{
      */
     public function createTemplate($name){
         if ($this->sectionLists) {
-            $this->templeteList[$name] = end($this->sectionLists);
+            $this->templeteList[$name] = array_pop($this->sectionLists);
         }
         return $this;
     }
@@ -152,12 +152,12 @@ class wordControl{
      * @param  string $text	 
      * @return $this
      */
-    public function templateText($name,$text){
+    public function templateText($name,$text = null){
         if (isset($this->templeteList[$name])) {
             $wordSection = clone $this->templeteList[$name]['section'];
             foreach ($wordSection->getSectionTexts() as $wordText) {
                 $newWordText = clone $wordText;
-                $newWordText->text($text);
+                if($text != null) $newWordText->text($text);
                 $wordSection->addText($newWordText);
             }
             $this->sectionLists[] = array('type'=>'section','section'=>$wordSection);
